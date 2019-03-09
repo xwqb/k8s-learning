@@ -1,0 +1,28 @@
+appVersion: v1
+kind: Pod
+metadata:
+ name: mysql
+ labels:
+  app: mysql
+spec:
+ containers:
+  - name: mysql
+    image: docker.io/mysql:5.7.21
+    ports:
+     - containerPort: 3306
+    env:
+     - name: MYSQL_ROOT_PASSWORD
+       value: "123456"
+    args: ["--character-set-server=utf8mb4","--collation-server=utf8mb4_unicode_ci","--default-authentication-plugin=mysql_native_password"]
+    volumeMounts:
+     - mountPath: /etc/mysql/
+       name: mysql-config
+     - mountPath: /var/lib/mysql
+       name: mysql-data
+ volumes:
+  - name: mysql-config
+    hostPath:
+     path: /home/k8s/mysql/config
+  - name: mysql-data
+    hostPath: 
+     path: /home/k8s/mysql/data
